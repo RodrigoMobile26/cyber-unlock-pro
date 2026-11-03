@@ -307,6 +307,25 @@ function recharge() {
   result.textContent = 'Solicitud de recarga de ' + amount + ' ' + currency + ' preparada. El pago real aún no está conectado.';
 }
 </script>
+  </script>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL = 'https://xapnoupfiubyzexewyfu.supabase.co';
+
+  const SUPABASE_ANON_KEY ='sb_publishable_mbSvO8kko44UIuyMoNLp2Q_Lj3_PsMk';
+
+  const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  window.supabase = supabase;
+</script>
+
+</body>
+</html>
 </body>
 </html>
 
