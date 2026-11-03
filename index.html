@@ -172,39 +172,21 @@ footer {
   </div>
   <div class="notice">Versión inicial de CYBER UNLOCK PRO. Las operaciones reales se habilitarán al conectar el servidor y los proveedores autorizados.</div>
 </section>
-
 <section id="iphone" class="section">
   <h1>iPhone / <span class="green">iPad</span></h1>
-  <div class="card">
-    <h2>Servicios Apple</h2>
-    <p>Consulta de estado, identificación y recepción de solicitudes técnicas.</p>
-    <label>Selecciona un servicio</label>
-    <select id="appleService">
-      <option>Consulta de estado del dispositivo</option>
-      <option>Diagnóstico técnico</option>
-      <option>Asistencia de activación oficial</option>
-    </select>
-    <label>IMEI o número de serie</label>
-    <input id="appleImei" placeholder="Introduce el identificador">
-    <button class="action" onclick="order('appleImei','appleService')">Enviar solicitud</button>
+  <div id="appleCatalog">
+    <div class="card">Cargando servicios Apple...</div>
   </div>
 </section>
 
 <section id="android" class="section">
   <h1>Servicios <span class="green">Android</span></h1>
-  <div class="card">
-    <h2>Servicios Android</h2>
-    <label>Selecciona un servicio</label>
-    <select id="androidService">
-      <option>Diagnóstico técnico</option>
-      <option>Consulta de estado del dispositivo</option>
-      <option>Identificación de modelo</option>
-    </select>
-    <label>IMEI</label>
-    <input id="androidImei" placeholder="Introduce el IMEI">
-    <button class="action" onclick="order('androidImei','androidService')">Enviar solicitud</button>
+  <div id="androidCatalog">
+    <div class="card">Cargando servicios Android...</div>
   </div>
 </section>
+
+
 
 <section id="imei" class="section">
   <h1>Consulta <span class="green">IMEI</span></h1>
@@ -324,7 +306,63 @@ function recharge() {
   );
 
   window.supabase = supabase;
+async function cargarServicios() {
+  const { data, error } = await supabase
+    .from('services')
+    .select('id, name, device_type, price_ars, price_usdt, active')
+    .eq('active', true);
 
+  if (error) {
+    console.error('Error cargando servicios:', error);
+    document.getElementById('appleCatalog').textContent =
+      'Error al cargar servicios.';
+    document.getElementById('androidCatalog').textContent =
+      'Error al cargar servicios.';
+    return;
+  }
+
+  const apple = document.getElementById('appleCatalog');
+  const android = document.getElementById('androidCatalog');
+
+  apple.replaceChildren();
+  android.replaceChildren();
+
+  function mostrarServicio(servicio, contenedor) {
+    const tarjeta = document.createElement('div');
+    tarjeta.className = 'card';
+
+    const nombre = document.createElement('h2');
+    nombre.textContent = servicio.name;
+
+    const precio = document.createElement('p');
+    precio.textContent =
+      'ARS: $' + (servicio.price_ars ?? 0) +
+      ' | USDT: ' + (servicio.price_usdt ?? 0);
+
+    tarjeta.append(nombre, precio);
+    contenedor.appendChild(tarjeta);
+  }
+
+  data.forEach(servicio => {
+    const tipo = String(servicio.device_type || '').toLowerCase();
+
+    if (tipo.includes('iphone') || tipo.includes('ipad') || tipo.includes('apple')) {
+      mostrarServicio(servicio, apple);
+    } else if (tipo.includes('android')) {
+      mostrarServicio(servicio, android);
+    }
+  });
+
+  if (!apple.children.length) {
+    apple.textContent = 'Todavía no hay servicios Apple activos.';
+  }
+
+  if (!android.children.length) {
+    android.textContent = 'Todavía no hay servicios Android activos.';
+  }
+}
+
+cargarServicios();
   async function probarSupabase() {
     console.log('Probando conexión con Supabase...');
 
