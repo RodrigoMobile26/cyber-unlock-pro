@@ -323,7 +323,24 @@ function recharge() {
 
   window.supabase = supabase;
 </script>
+<script>
+async function probarSupabase() {
+  const { data, error } = await window.supabase
+    .from('services')
+    .select('*');
 
+  if (error) {
+    alert('Error de conexión: ' + error.message);
+    console.error(error);
+    return;
+  }
+
+  alert('¡Conexión correcta con CYBER UNLOCK PRO!');
+  console.log(data);
+}
+
+probarSupabase();
+</script>
 </body>
 </html>
 </body>
