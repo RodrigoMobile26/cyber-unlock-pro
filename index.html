@@ -1,1 +1,312 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CYBER UNLOCK PRO</title>
+<style>
+:root {
+  --green: #39ff14;
+  --bg: #080b09;
+  --panel: #111713;
+  --border: #263b2b;
+  --muted: #9aa99c;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+header {
+  padding: 20px 5%;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.logo { color: var(--green); font-size: 22px; font-weight: bold; }
+.logo span { color: white; }
+header small { color: var(--muted); }
+.layout {
+  display: flex;
+  min-height: calc(100vh - 75px);
+}
+nav {
+  width: 220px;
+  padding: 25px 15px;
+  border-right: 1px solid var(--border);
+}
+nav button {
+  width: 100%;
+  background: transparent;
+  color: white;
+  border: 1px solid transparent;
+  text-align: left;
+  padding: 13px;
+  margin-bottom: 7px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+nav button:hover, nav button.active {
+  border-color: var(--green);
+  color: var(--green);
+  background: #142017;
+}
+main { flex: 1; padding: 30px; min-width: 0; }
+h1 { margin-top: 0; font-size: 27px; }
+h2 { font-size: 19px; }
+.green { color: var(--green); }
+.muted { color: var(--muted); }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
+  gap: 15px;
+  margin: 25px 0;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.value { font-size: 25px; color: var(--green); font-weight: bold; }
+.section { display: none; }
+.section.active { display: block; }
+input, select {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  margin: 10px 0 17px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: #080e0a;
+  color: white;
+}
+.action {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--green);
+  color: #061006;
+  font-weight: bold;
+  cursor: pointer;
+}
+.action:hover { background: #8aff76; }
+.notice {
+  background: #142017;
+  border-left: 3px solid var(--green);
+  padding: 14px;
+  color: #c8d5ca;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+table { width: 100%; border-collapse: collapse; }
+td, th {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+footer {
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+@media(max-width:700px) {
+  .layout { display: block; }
+  nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  main { padding: 20px 15px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CYBER <span>UNLOCK PRO</span></div>
+  <small>PLATAFORMA PROFESIONAL · PANEL DE SERVICIOS</small>
+</header>
+
+<div class="layout">
+<nav>
+  <button class="active" onclick="show('inicio',this)">⌂ Inicio</button>
+  <button onclick="show('iphone',this)">▣ iPhone / iPad</button>
+  <button onclick="show('android',this)">▣ Android</button>
+  <button onclick="show('imei',this)">⌕ Consulta IMEI</button>
+  <button onclick="show('ordenes',this)">▤ Mis órdenes</button>
+  <button onclick="show('saldo',this)">◈ Saldo y recargas</button>
+  <button onclick="show('cuenta',this)">⚙ Mi cuenta</button>
+</nav>
+
+<main>
+<section id="inicio" class="section active">
+  <h1>Panel de <span class="green">control</span></h1>
+  <p class="muted">Bienvenido a CYBER UNLOCK PRO.</p>
+  <div class="cards">
+    <div class="card">
+      <p class="muted">Saldo ARS</p>
+      <div class="value">$0,00</div>
+    </div>
+    <div class="card">
+      <p class="muted">Saldo USDT</p>
+      <div class="value">0.00</div>
+    </div>
+    <div class="card">
+      <p class="muted">Mis órdenes</p>
+      <div class="value" id="total">0</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Centro de servicios</h2>
+    <p class="muted">Gestiona consultas y solicitudes para dispositivos móviles desde un solo panel.</p>
+  </div>
+  <div class="notice">Versión inicial de CYBER UNLOCK PRO. Las operaciones reales se habilitarán al conectar el servidor y los proveedores autorizados.</div>
+</section>
+
+<section id="iphone" class="section">
+  <h1>iPhone / <span class="green">iPad</span></h1>
+  <div class="card">
+    <h2>Servicios Apple</h2>
+    <p>Consulta de estado, identificación y recepción de solicitudes técnicas.</p>
+    <label>Selecciona un servicio</label>
+    <select id="appleService">
+      <option>Consulta de estado del dispositivo</option>
+      <option>Diagnóstico técnico</option>
+      <option>Asistencia de activación oficial</option>
+    </select>
+    <label>IMEI o número de serie</label>
+    <input id="appleImei" placeholder="Introduce el identificador">
+    <button class="action" onclick="order('appleImei','appleService')">Enviar solicitud</button>
+  </div>
+</section>
+
+<section id="android" class="section">
+  <h1>Servicios <span class="green">Android</span></h1>
+  <div class="card">
+    <h2>Servicios Android</h2>
+    <label>Selecciona un servicio</label>
+    <select id="androidService">
+      <option>Diagnóstico técnico</option>
+      <option>Consulta de estado del dispositivo</option>
+      <option>Identificación de modelo</option>
+    </select>
+    <label>IMEI</label>
+    <input id="androidImei" placeholder="Introduce el IMEI">
+    <button class="action" onclick="order('androidImei','androidService')">Enviar solicitud</button>
+  </div>
+</section>
+
+<section id="imei" class="section">
+  <h1>Consulta <span class="green">IMEI</span></h1>
+  <div class="card">
+    <h2>Verificación de dispositivo</h2>
+    <p class="muted">Introduce el IMEI para preparar una consulta de estado.</p>
+    <input id="checkImei" placeholder="IMEI de 15 dígitos" maxlength="15">
+    <button class="action" onclick="checkImei()">Preparar consulta</button>
+    <p id="imeiResult" class="notice">La consulta real requiere conectar un proveedor API autorizado.</p>
+  </div>
+</section>
+
+<section id="ordenes" class="section">
+  <h1>Mis <span class="green">órdenes</span></h1>
+  <div class="card">
+    <table>
+      <thead><tr><th>Número</th><th>Servicio</th><th>Estado</th></tr></thead>
+      <tbody id="orders">
+        <tr><td colspan="3">Todavía no tienes solicitudes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="saldo" class="section">
+  <h1>Saldo y <span class="green">recargas</span></h1>
+  <div class="cards">
+    <div class="card"><p>Pesos argentinos</p><div class="value">$0,00</div></div>
+    <div class="card"><p>USDT</p><div class="value">0.00</div></div>
+  </div>
+  <div class="card">
+    <h2>Solicitar recarga</h2>
+    <label>Moneda</label>
+    <select id="currency"><option>ARS</option><option>USDT</option></select>
+    <label>Importe</label>
+    <input id="amount" type="number" min="1" placeholder="Introduce el importe">
+    <button class="action" onclick="recharge()">Solicitar recarga</button>
+    <p id="rechargeResult" class="muted"></p>
+  </div>
+  <div class="notice">Las recargas son demostrativas. Los pagos y acreditaciones necesitan integración con un proveedor de pagos.</div>
+</section>
+
+<section id="cuenta" class="section">
+  <h1>Mi <span class="green">cuenta</span></h1>
+  <div class="card">
+    <h2>Acceso de usuario</h2>
+    <p class="muted">La autenticación segura se configurará en la siguiente etapa.</p>
+    <p>Estado: <span class="green">Prototipo inicial</span></p>
+  </div>
+</section>
+</main>
+</div>
+
+<footer>CYBER UNLOCK PRO · Plataforma de servicios técnicos</footer>
+
+<script>
+let count = 0;
+
+function show(id, button) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  button.classList.add('active');
+}
+
+function order(inputId, serviceId) {
+  const imei = document.getElementById(inputId).value.trim();
+  const service = document.getElementById(serviceId).value;
+  if (!/^[0-9]{15}$/.test(imei)) {
+    alert('Introduce un IMEI válido de 15 dígitos.');
+    return;
+  }
+  count++;
+  document.getElementById('total').textContent = count;
+  const table = document.getElementById('orders');
+  if (count === 1) table.innerHTML = '';
+  const row = table.insertRow();
+  row.innerHTML = `<td>#${count}</td><td>${service}</td><td>Pendiente de conexión</td>`;
+  alert('Solicitud de demostración registrada. Todavía no se envió a un servidor.');
+}
+
+function checkImei() {
+  const value = document.getElementById('checkImei').value.trim();
+  const result = document.getElementById('imeiResult');
+  if (!/^[0-9]{15}$/.test(value)) {
+    result.textContent = 'Introduce un IMEI válido de 15 dígitos.';
+    return;
+  }
+  result.textContent = 'IMEI recibido. Para consultar el estado real debemos conectar un proveedor API autorizado.';
+}
+
+function recharge() {
+  const amount = Number(document.getElementById('amount').value);
+  const currency = document.getElementById('currency').value;
+  const result = document.getElementById('rechargeResult');
+  if (!Number.isFinite(amount) || amount <= 0) {
+    result.textContent = 'Introduce un importe válido.';
+    return;
+  }
+  result.textContent = 'Solicitud de recarga de ' + amount + ' ' + currency + ' preparada. El pago real aún no está conectado.';
+}
+</script>
+</body>
+</html>
+
