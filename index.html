@@ -296,25 +296,27 @@ function checkImei() {
   result.textContent = 'IMEI recibido. Para consultar el estado real debemos conectar un proveedor API autorizado.';
 }
 
+
 function recharge() {
   const amount = Number(document.getElementById('amount').value);
   const currency = document.getElementById('currency').value;
   const result = document.getElementById('rechargeResult');
+
   if (!Number.isFinite(amount) || amount <= 0) {
     result.textContent = 'Introduce un importe válido.';
     return;
   }
+
   result.textContent = 'Solicitud de recarga de ' + amount + ' ' + currency + ' preparada. El pago real aún no está conectado.';
 }
 </script>
-  </script>
 
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
   const SUPABASE_URL = 'https://xapnoupfiubyzexewyfu.supabase.co';
 
-  const SUPABASE_ANON_KEY ='sb_publishable_mbSvO8kko44UIuyMoNLp2Q_Lj3_PsMk';
+  const SUPABASE_ANON_KEY = 'sb_publishable_mbSvO8kko44UIuyMoNLp2Q_Lj3_PsMk';
 
   const supabase = createClient(
     SUPABASE_URL,
@@ -322,27 +324,28 @@ function recharge() {
   );
 
   window.supabase = supabase;
-</script>
-<script>
-async function probarSupabase() {
-  const { data, error } = await window.supabase
-    .from('services')
-    .select('*');
 
-  if (error) {
-    alert('Error de conexión: ' + error.message);
-    console.error(error);
-    return;
+  async function probarSupabase() {
+    console.log('Probando conexión con Supabase...');
+
+    const { data, error } = await supabase
+      .from('services')
+      .select('*');
+
+    if (error) {
+      console.error('Error de Supabase:', error);
+      alert('Error de conexión: ' + error.message);
+      return;
+    }
+
+    console.log('Conexión correcta:', data);
+    alert('¡Conexión correcta con CYBER UNLOCK PRO!');
   }
 
-  alert('¡Conexión correcta con CYBER UNLOCK PRO!');
-  console.log(data);
-}
-
-probarSupabase();
+  probarSupabase();
 </script>
+
 </body>
 </html>
-</body>
-</html>
+
 
