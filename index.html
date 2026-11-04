@@ -236,14 +236,35 @@ footer {
   <div class="notice">Las recargas son demostrativas. Los pagos y acreditaciones necesitan integración con un proveedor de pagos.</div>
 </section>
 
+
 <section id="cuenta" class="section">
   <h1>Mi <span class="green">cuenta</span></h1>
-  <div class="card">
-    <h2>Acceso de usuario</h2>
-    <p class="muted">La autenticación segura se configurará en la siguiente etapa.</p>
-    <p>Estado: <span class="green">Prototipo inicial</span></p>
+
+  <div class="card" id="authPanel">
+    <h2>Crear una cuenta</h2>
+    <p class="muted">Regístrate para acceder a CYBER UNLOCK PRO.</p>
+
+    <label>Correo electrónico</label>
+    <input id="authEmail" type="email"
+      placeholder="correo@ejemplo.com">
+
+    <label>Contraseña</label>
+    <input id="authPassword" type="password"
+      placeholder="Mínimo 6 caracteres">
+
+    <button id="registerBtn">Registrarme</button>
+    <button id="loginBtn">Iniciar sesión</button>
+
+    <p id="authMessage" class="muted"></p>
+  </div>
+
+  <div class="card" id="userPanel" hidden>
+    <h2>Mi perfil</h2>
+    <p id="userEmail"></p>
+    <button id="logoutBtn">Cerrar sesión</button>
   </div>
 </section>
+
 </main>
 </div>
 
