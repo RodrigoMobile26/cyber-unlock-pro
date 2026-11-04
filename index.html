@@ -391,24 +391,95 @@ async function cargarServicios() {
 }
 
 cargarServicios();
-  async function probarSupabase() {
-    console.log('Probando conexión con Supabase...');
+ 
+// AUTENTICACIÓN DE USUARIOS
+const authPanel = document.getElementById('authPanel');
+const userPanel = document.getElementById('userPanel');
+const authMessage = document.getElementById('authMessage');
 
-    const { data, error } = await supabase
-      .from('services')
-      .select('*');
+function mostrarUsuario(user) {
+  if (user) {
+    authPanel.hidden = true;
+    userPanel.hidden = false;
+    document.getElementById('userEmail').textContent =
+      'Correo: ' + user.email;
+  } else {
+    authPanel.hidden = false;
+    userPanel.hidden = true;
+  }
+}
 
-    if (error) {
-      console.error('Error de Supabase:', error);
-      alert('Error de conexión: ' + error.message);
-      return;
-    }
+document.getElementById('registerBtn').addEventListener('click', async () => {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
 
-    console.log('Conexión correcta:', data);
-    alert('¡Conexión correcta con CYBER UNLOCK PRO!');
+  if (!email || password.length < 6) {
+    authMessage.textContent =
+      'Ingresa un correo válido y una contraseña de al menos 6 caracteres.';
+    return;
   }
 
-  probarSupabase();
+  authMessage.textContent = 'Creando cuenta...';
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
+    authMessage.textContent = 'Error: ' + error.message;
+    return;
+  }
+
+  if (data.session) {
+    authMessage.textContent = '¡Cuenta creada correctamente!';
+  } else {
+    authMessage.textContent =
+      'Cuenta creada. Revisa tu correo para confirmar el registro.';
+  }
+});
+
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+
+  authMessage.textContent = 'Iniciando sesión...';
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    authMessage.textContent = 'Error: ' + error.message;
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    authMessage.textContent = 'Error al cerrar sesión: ' + error.message;
+  }
+});
+
+supabase.auth.onAuthStateChange((_event, session) => {
+  mostrarUsuario(session?.user ?? null);
+});
+
+async function cargarSesion() {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) {
+    authMessage.textContent = 'Error al comprobar la sesión.';
+    return;
+  }
+
+  mostrarUsuario(data.session?.user ?? null);
+}
+
+cargarSesion();
+
 </script>
 
 </body>
