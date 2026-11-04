@@ -390,7 +390,54 @@ function recharge() {
   );
 
   window.supabase = supabase;
-async function cargarServicios() {
+async function cargarOrdenes() {
+  const tbody = document.getElementById('orders');
+
+  const { data: { user }, error: userError } =
+    await supabase.auth.getUser();
+
+  tbody.replaceChildren();
+
+  if (userError || !user) {
+    const fila = tbody.insertRow();
+    const celda = fila.insertCell();
+    celda.colSpan = 3;
+    celda.textContent = 'Inicia sesión para ver tus órdenes.';
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('orders')
+    .select('id, status, service_id, created_at')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error cargando órdenes:', error);
+    const fila = tbody.insertRow();
+    const celda = fila.insertCell();
+    celda.colSpan = 3;
+    celda.textContent = 'Error al cargar las órdenes.';
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    const fila = tbody.insertRow();
+    const celda = fila.insertCell();
+    celda.colSpan = 3;
+    celda.textContent = 'Todavía no tienes solicitudes.';
+    return;
+  }
+
+  data.forEach(orden => {
+    const fila = tbody.insertRow();
+
+    fila.insertCell().textContent = '#' + orden.id;
+    fila.insertCell().textContent = 'Servicio #' + orden.service_id;
+    fila.insertCell().textContent = orden.status || 'Pendiente';
+  });
+}
+  async function cargarServicios() {
   const { data, error } = await supabase
     .from('services')
     .select('id, name, device_type, price_ars, price_usdt, active')
