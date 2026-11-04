@@ -304,20 +304,52 @@ function show(id, button) {
   button.classList.add('active');
 }
 
-function order(inputId, serviceId) {
+
+async function order(inputId, serviceId) {
   const imei = document.getElementById(inputId).value.trim();
   const service = document.getElementById(serviceId).value;
+
   if (!/^[0-9]{15}$/.test(imei)) {
     alert('Introduce un IMEI válido de 15 dígitos.');
     return;
   }
-  count++;
-  document.getElementById('total').textContent = count;
-  const table = document.getElementById('orders');
-  if (count === 1) table.innerHTML = '';
-  const row = table.insertRow();
-  row.innerHTML = `<td>#${count}</td><td>${service}</td><td>Pendiente de conexión</td>`;
-  alert('Solicitud de demostración registrada. Todavía no se envió a un servidor.');
+
+  const serviceNumber = Number(service);
+
+  if (!Number.isSafeInteger(serviceNumber) || serviceNumber <= 0) {
+    alert('Selecciona un servicio válido.');
+    return;
+  }
+
+  if (!window.supabase) {
+    alert('No se pudo conectar con Supabase.');
+    return;
+  }
+
+  const { data: { user }, error: userError } =
+    await window.supabase.auth.getUser();
+
+  if (userError || !user) {
+    alert('Debes iniciar sesión para solicitar un servicio.');
+    return;
+  }
+
+  const { error } = await window.supabase
+    .from('orders')
+    .insert({
+      user_id: user.id,
+      service_id: serviceNumber,
+      imei: imei
+    });
+
+  if (error) {
+    console.error('Error creando orden:', error);
+    alert('No se pudo crear la orden: ' + error.message);
+    return;
+  }
+
+  alert('¡Solicitud registrada correctamente!');
+  window.location.reload();
 }
 
 function checkImei() {
@@ -379,21 +411,63 @@ async function cargarServicios() {
   apple.replaceChildren();
   android.replaceChildren();
 
-  function mostrarServicio(servicio, contenedor) {
-    const tarjeta = document.createElement('div');
-    tarjeta.className = 'card';
+  
+function mostrarServicio(servicio, contenedor) {
+  const tarjeta = document.createElement('div');
+  tarjeta.className = 'card';
 
-    const nombre = document.createElement('h2');
-    nombre.textContent = servicio.name;
+  const nombre = document.createElement('h2');
+  nombre.textContent = servicio.name;
 
-    const precio = document.createElement('p');
-    precio.textContent =
-      'ARS: $' + (servicio.price_ars ?? 0) +
-      ' | USDT: ' + (servicio.price_usdt ?? 0);
+  const precio = document.createElement('p');
+  precio.textContent =
+    'ARS: $' + (servicio.price_ars ?? 0) +
+    ' | USDT: ' + (servicio.price_usdt ?? 0);
 
-    tarjeta.append(nombre, precio);
-    contenedor.appendChild(tarjeta);
-  }
+  const campoIMEI = document.createElement('input');
+  campoIMEI.type = 'text';
+  campoIMEI.maxLength = 15;
+  campoIMEI.placeholder = 'Introduce el IMEI (15 dígitos)';
+
+  const boton = document.createElement('button');
+  boton.textContent = 'Solicitar servicio';
+
+  boton.addEventListener('click', async () => {
+    const imei = campoIMEI.value.trim();
+
+    if (!/^[0-9]{15}$/.test(imei)) {
+      alert('Introduce un IMEI válido de 15 dígitos.');
+      return;
+    }
+
+    const { data: { user }, error: userError } =
+      await supabase.auth.getUser();
+
+    if (userError || !user) {
+      alert('Inicia sesión para solicitar el servicio.');
+      return;
+    }
+
+    const { error } = await supabase.from('orders').insert({
+      user_id: user.id,
+      service_id: servicio.id,
+      imei: imei
+    });
+
+    if (error) {
+      alert('Error al crear la orden: ' + error.message);
+      console.error(error);
+      return;
+    }
+
+    alert('¡Solicitud registrada correctamente!');
+    await cargarOrdenes();
+  });
+
+  tarjeta.append(nombre, precio, campoIMEI, boton);
+  contenedor.appendChild(tarjeta);
+}
+
 
   data.forEach(servicio => {
     const tipo = String(servicio.device_type || '').toLowerCase();
