@@ -416,6 +416,45 @@ async function cargarServicios() {
 
 cargarServicios();
  
+// CARGAR SALDOS DEL USUARIO
+async function cargarBilletera() {
+  const { data: { user }, error: userError } =
+    await supabase.auth.getUser();
+
+  if (userError || !user) {
+    document.getElementById('walletARS').textContent = '$0,00';
+    document.getElementById('walletUSDT').textContent = '0.00';
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('wallets')
+    .select('balance_ars, balance_usdt')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (error || !data) {
+    console.error('Error cargando billetera:', error);
+    return;
+  }
+
+  document.getElementById('walletARS').textContent =
+    '$' + Number(data.balance_ars).toLocaleString('es-AR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+
+  document.getElementById('walletUSDT').textContent =
+    Number(data.balance_usdt).toFixed(2);
+}
+
+// Actualizar al iniciar sesión o cerrar sesión
+supabase.auth.onAuthStateChange(() => {
+  cargarBilletera();
+});
+
+cargarBilletera();
+
 // AUTENTICACIÓN DE USUARIOS
 const authPanel = document.getElementById('authPanel');
 const userPanel = document.getElementById('userPanel');
