@@ -218,23 +218,47 @@ footer {
   </div>
 </section>
 
+
 <section id="saldo" class="section">
   <h1>Saldo y <span class="green">recargas</span></h1>
+
   <div class="cards">
-    <div class="card"><p>Pesos argentinos</p><div class="value">$0,00</div></div>
-    <div class="card"><p>USDT</p><div class="value">0.00</div></div>
+    <div class="card">
+      <p>Pesos argentinos</p>
+      <div class="value" id="walletARS">$0,00</div>
+    </div>
+
+    <div class="card">
+      <p>USDT</p>
+      <div class="value" id="walletUSDT">0.00</div>
+    </div>
   </div>
+
   <div class="card">
     <h2>Solicitar recarga</h2>
+
     <label>Moneda</label>
-    <select id="currency"><option>ARS</option><option>USDT</option></select>
+    <select id="currency">
+      <option value="ARS">ARS</option>
+      <option value="USDT">USDT</option>
+    </select>
+
     <label>Importe</label>
-    <input id="amount" type="number" min="1" placeholder="Introduce el importe">
-    <button class="action" onclick="recharge()">Solicitar recarga</button>
+    <input id="amount" type="number" min="1" step="0.01"
+      placeholder="Introduce el importe">
+
+    <button class="action" onclick="recharge()">
+      Solicitar recarga
+    </button>
+
     <p id="rechargeResult" class="muted"></p>
   </div>
-  <div class="notice">Las recargas son demostrativas. Los pagos y acreditaciones necesitan integración con un proveedor de pagos.</div>
+
+  <div class="notice">
+    Las recargas requieren verificación de pago antes de acreditar fondos.
+  </div>
 </section>
+
 
 
 <section id="cuenta" class="section">
