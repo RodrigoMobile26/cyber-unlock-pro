@@ -7,126 +7,100 @@
 <title>CYBER UNLOCK PRO</title>
 <style>
 :root {
-  --green: #39ff14;
-  --bg: #080b09;
-  --panel: #111713;
-  --border: #263b2b;
-  --muted: #9aa99c;
+  --green:#39ff14;
+  --bg:#080b09;
+  --panel:#111713;
+  --border:#263b2b;
+  --muted:#9aa99c;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: white;
-  font-family: Arial, sans-serif;
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:white;
+  font-family:Arial,sans-serif
 }
-header {
-  padding: 20px 5%;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
+header{
+  padding:18px 5%;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:12px
 }
-.logo { color: var(--green); font-size: 22px; font-weight: bold; }
-.logo span { color: white; }
-header small { color: var(--muted); }
-.layout {
-  display: flex;
-  min-height: calc(100vh - 75px);
+.logo{color:var(--green);font-size:22px;font-weight:bold}
+.logo span{color:white}
+header small{color:var(--muted)}
+.layout{display:flex;min-height:calc(100vh - 70px)}
+nav{
+  width:220px;padding:20px 14px;
+  border-right:1px solid var(--border)
 }
-nav {
-  width: 220px;
-  padding: 25px 15px;
-  border-right: 1px solid var(--border);
+nav button{
+  width:100%;display:block;text-align:left;
+  padding:13px;margin-bottom:7px;
+  background:transparent;color:white;
+  border:1px solid transparent;border-radius:8px;
+  cursor:pointer
 }
-nav button {
-  width: 100%;
-  background: transparent;
-  color: white;
-  border: 1px solid transparent;
-  text-align: left;
-  padding: 13px;
-  margin-bottom: 7px;
-  border-radius: 8px;
-  cursor: pointer;
+nav button:hover,nav button.active{
+  border-color:var(--green);color:var(--green);
+  background:#142017
 }
-nav button:hover, nav button.active {
-  border-color: var(--green);
-  color: var(--green);
-  background: #142017;
+main{flex:1;padding:28px;min-width:0}
+h1{font-size:27px;margin-top:0}
+h2{font-size:19px}
+.green{color:var(--green)}
+.muted{color:var(--muted)}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:15px;margin:22px 0
 }
-main { flex: 1; padding: 30px; min-width: 0; }
-h1 { margin-top: 0; font-size: 27px; }
-h2 { font-size: 19px; }
-.green { color: var(--green); }
-.muted { color: var(--muted); }
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
-  gap: 15px;
-  margin: 25px 0;
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;padding:20px;margin-bottom:14px
 }
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
+.value{font-size:25px;color:var(--green);font-weight:bold}
+.section{display:none}
+.section.active{display:block}
+input,select{
+  display:block;width:100%;padding:13px;margin:9px 0 16px;
+  border-radius:7px;border:1px solid var(--border);
+  background:#080e0a;color:white
 }
-.value { font-size: 25px; color: var(--green); font-weight: bold; }
-.section { display: none; }
-.section.active { display: block; }
-input, select {
-  display: block;
-  width: 100%;
-  padding: 13px;
-  margin: 10px 0 17px;
-  border-radius: 7px;
-  border: 1px solid var(--border);
-  background: #080e0a;
-  color: white;
+label{color:#d4ded5;font-size:14px}
+.action{
+  padding:12px 18px;border:0;border-radius:7px;
+  background:var(--green);color:#061006;
+  font-weight:bold;cursor:pointer
 }
-.action {
-  padding: 12px 18px;
-  border: 0;
-  border-radius: 7px;
-  background: var(--green);
-  color: #061006;
-  font-weight: bold;
-  cursor: pointer;
+.action:hover{background:#8aff76}
+.action:disabled{opacity:.5;cursor:not-allowed}
+.secondary{
+  padding:11px 15px;border:1px solid var(--border);
+  border-radius:7px;background:#172019;color:white;
+  cursor:pointer;margin-right:7px
 }
-.action:hover { background: #8aff76; }
-.notice {
-  background: #142017;
-  border-left: 3px solid var(--green);
-  padding: 14px;
-  color: #c8d5ca;
-  border-radius: 5px;
-  margin-top: 20px;
+.notice{
+  background:#142017;border-left:3px solid var(--green);
+  padding:14px;color:#c8d5ca;border-radius:5px;margin-top:15px
 }
-table { width: 100%; border-collapse: collapse; }
-td, th {
-  padding: 12px;
-  border-bottom: 1px solid var(--border);
-  text-align: left;
+.message{margin-top:12px;min-height:20px;color:var(--green)}
+table{width:100%;border-collapse:collapse;min-width:400px}
+td,th{padding:12px;border-bottom:1px solid var(--border);text-align:left}
+.table-wrap{overflow-x:auto}
+.section-empty{color:var(--muted);padding:15px}
+footer{
+  padding:20px;text-align:center;color:var(--muted);
+  border-top:1px solid var(--border)
 }
-footer {
-  padding: 20px;
-  text-align: center;
-  color: var(--muted);
-  border-top: 1px solid var(--border);
-}
-@media(max-width:700px) {
-  .layout { display: block; }
-  nav {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    border-right: 0;
-    border-bottom: 1px solid var(--border);
+[hidden]{display:none!important}
+@media(max-width:700px){
+  .layout{display:block}
+  nav{
+    width:100%;display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    border-right:0;border-bottom:1px solid var(--border)
   }
-  main { padding: 20px 15px; }
+  nav button{font-size:13px;padding:11px 8px}
+  main{padding:20px 14px}
+  header{padding:16px}
 }
 </style>
 </head>
@@ -139,85 +113,96 @@ footer {
 
 <div class="layout">
 <nav>
-  <button class="active" onclick="show('inicio',this)">⌂ Inicio</button>
-  <button onclick="show('iphone',this)">▣ iPhone / iPad</button>
-  <button onclick="show('android',this)">▣ Android</button>
-  <button onclick="show('imei',this)">⌕ Consulta IMEI</button>
-  <button onclick="show('ordenes',this)">▤ Mis órdenes</button>
-  <button onclick="show('saldo',this)">◈ Saldo y recargas</button>
-  <button onclick="show('cuenta',this)">⚙ Mi cuenta</button>
+  <button class="active" data-section="inicio">⌂ Inicio</button>
+  <button data-section="iphone">▣ iPhone / iPad</button>
+  <button data-section="android">▣ Android</button>
+  <button data-section="imei">⌕ Consulta IMEI</button>
+  <button data-section="ordenes">▤ Mis órdenes</button>
+  <button data-section="saldo">◈ Saldo y recargas</button>
+  <button data-section="cuenta">⚙ Mi cuenta</button>
 </nav>
 
 <main>
+
 <section id="inicio" class="section active">
-
-  <div style="text-align:center; margin-bottom:25px;">
+  <div style="text-align:center;margin-bottom:24px">
     <img src="photo_2026-11-03_03-32-24.jpg"
-         alt="CYBER UNLOCK PRO"
-         style="width:180px; max-width:80%; height:auto;">
+      alt="CYBER UNLOCK PRO"
+      style="width:180px;max-width:80%;height:auto">
   </div>
-
   <h1>Panel de <span class="green">control</span></h1>
-  <p class="muted">Bienvenido a CYBER UNLOCK PRO.</p>
+  <p class="muted" id="welcomeText">Bienvenido a CYBER UNLOCK PRO.</p>
+
   <div class="cards">
     <div class="card">
       <p class="muted">Saldo ARS</p>
-      <div class="value">$0,00</div>
+      <div class="value" id="homeARS">$0,00</div>
     </div>
     <div class="card">
       <p class="muted">Saldo USDT</p>
-      <div class="value">0.00</div>
+      <div class="value" id="homeUSDT">0.00</div>
     </div>
     <div class="card">
       <p class="muted">Mis órdenes</p>
-      <div class="value" id="total">0</div>
+      <div class="value" id="totalOrders">0</div>
     </div>
   </div>
+
   <div class="card">
     <h2>Centro de servicios</h2>
-    <p class="muted">Gestiona consultas y solicitudes para dispositivos móviles desde un solo panel.</p>
+    <p class="muted">
+      Gestioná tus consultas y solicitudes de servicios para dispositivos móviles.
+    </p>
   </div>
-  <div class="notice">Versión inicial de CYBER UNLOCK PRO. Las operaciones reales se habilitarán al conectar el servidor y los proveedores autorizados.</div>
+  <div class="notice" id="connectionStatus">
+    Comprobando conexión con el servidor...
+  </div>
 </section>
+
 <section id="iphone" class="section">
   <h1>iPhone / <span class="green">iPad</span></h1>
-  <div id="appleCatalog">
-    <div class="card">Cargando servicios Apple...</div>
-  </div>
+  <div id="appleCatalog" class="section-empty">Cargando servicios...</div>
 </section>
 
 <section id="android" class="section">
   <h1>Servicios <span class="green">Android</span></h1>
-  <div id="androidCatalog">
-    <div class="card">Cargando servicios Android...</div>
-  </div>
+  <div id="androidCatalog" class="section-empty">Cargando servicios...</div>
 </section>
-
-
 
 <section id="imei" class="section">
   <h1>Consulta <span class="green">IMEI</span></h1>
   <div class="card">
     <h2>Verificación de dispositivo</h2>
-    <p class="muted">Introduce el IMEI para preparar una consulta de estado.</p>
-    <input id="checkImei" placeholder="IMEI de 15 dígitos" maxlength="15">
-    <button class="action" onclick="checkImei()">Preparar consulta</button>
-    <p id="imeiResult" class="notice">La consulta real requiere conectar un proveedor API autorizado.</p>
+    <p class="muted">
+      Introducí el IMEI de 15 dígitos para preparar una consulta.
+    </p>
+    <label for="checkImei">Número IMEI</label>
+    <input id="checkImei" inputmode="numeric" maxlength="15"
+      placeholder="IMEI de 15 dígitos">
+    <button class="action" id="checkImeiBtn">Preparar consulta</button>
+    <p id="imeiResult" class="message"></p>
+  </div>
+  <div class="notice">
+    La consulta de estado real requiere integrar un proveedor API autorizado.
+    Esta sección todavía no consulta bases de datos externas.
   </div>
 </section>
 
 <section id="ordenes" class="section">
   <h1>Mis <span class="green">órdenes</span></h1>
   <div class="card">
-    <table>
-      <thead><tr><th>Número</th><th>Servicio</th><th>Estado</th></tr></thead>
-      <tbody id="orders">
-        <tr><td colspan="3">Todavía no tienes solicitudes.</td></tr>
-      </tbody>
-    </table>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Número</th><th>Servicio</th><th>IMEI</th><th>Estado</th></tr>
+        </thead>
+        <tbody id="orders">
+          <tr><td colspan="4">Iniciá sesión para consultar tus órdenes.</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
-
 
 <section id="saldo" class="section">
   <h1>Saldo y <span class="green">recargas</span></h1>
@@ -227,7 +212,6 @@ footer {
       <p>Pesos argentinos</p>
       <div class="value" id="walletARS">$0,00</div>
     </div>
-
     <div class="card">
       <p>USDT</p>
       <div class="value" id="walletUSDT">0.00</div>
@@ -236,56 +220,55 @@ footer {
 
   <div class="card">
     <h2>Solicitar recarga</h2>
-
-    <label>Moneda</label>
+    <label for="currency">Moneda</label>
     <select id="currency">
       <option value="ARS">ARS</option>
       <option value="USDT">USDT</option>
     </select>
 
-    <label>Importe</label>
-    <input id="amount" type="number" min="1" step="0.01"
-      placeholder="Introduce el importe">
+    <label for="amount">Importe</label>
+    <input id="amount" type="number" min="0.01" step="0.01"
+      placeholder="Introducí el importe">
 
-    <button class="action" onclick="recharge()">
-      Solicitar recarga
-    </button>
+    <label for="paymentMethod">Método de pago</label>
+    <input id="paymentMethod" type="text"
+      placeholder="Ej.: transferencia, otro método">
 
-    <p id="rechargeResult" class="muted"></p>
+    <button class="action" id="rechargeBtn">Solicitar recarga</button>
+    <p id="rechargeResult" class="message"></p>
   </div>
 
   <div class="notice">
-    Las recargas requieren verificación de pago antes de acreditar fondos.
+    Las solicitudes quedan pendientes de verificación.
+    El saldo solamente debe acreditarse después de confirmar el pago.
   </div>
 </section>
-
-
 
 <section id="cuenta" class="section">
   <h1>Mi <span class="green">cuenta</span></h1>
 
   <div class="card" id="authPanel">
-    <h2>Crear una cuenta</h2>
-    <p class="muted">Regístrate para acceder a CYBER UNLOCK PRO.</p>
+    <h2>Acceso de usuarios</h2>
+    <p class="muted">Registrate o iniciá sesión para utilizar la plataforma.</p>
 
-    <label>Correo electrónico</label>
-    <input id="authEmail" type="email"
+    <label for="authEmail">Correo electrónico</label>
+    <input id="authEmail" type="email" autocomplete="email"
       placeholder="correo@ejemplo.com">
 
-    <label>Contraseña</label>
+    <label for="authPassword">Contraseña</label>
     <input id="authPassword" type="password"
-      placeholder="Mínimo 6 caracteres">
+      autocomplete="current-password" placeholder="Mínimo 6 caracteres">
 
-    <button id="registerBtn">Registrarme</button>
-    <button id="loginBtn">Iniciar sesión</button>
-
-    <p id="authMessage" class="muted"></p>
+    <button class="action" id="registerBtn">Crear cuenta</button>
+    <button class="secondary" id="loginBtn">Iniciar sesión</button>
+    <p id="authMessage" class="message"></p>
   </div>
 
   <div class="card" id="userPanel" hidden>
     <h2>Mi perfil</h2>
-    <p id="userEmail"></p>
-    <button id="logoutBtn">Cerrar sesión</button>
+    <p id="userEmail" class="green"></p>
+    <button class="secondary" id="logoutBtn">Cerrar sesión</button>
+    <p id="logoutMessage" class="message"></p>
   </div>
 </section>
 
@@ -294,235 +277,269 @@ footer {
 
 <footer>CYBER UNLOCK PRO · Plataforma de servicios técnicos</footer>
 
-<script>
-let count = 0;
-
-function show(id, button) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  button.classList.add('active');
-}
-
-
-async function order(inputId, serviceId) {
-  const imei = document.getElementById(inputId).value.trim();
-  const service = document.getElementById(serviceId).value;
-
-  if (!/^[0-9]{15}$/.test(imei)) {
-    alert('Introduce un IMEI válido de 15 dígitos.');
-    return;
-  }
-
-  const serviceNumber = Number(service);
-
-  if (!Number.isSafeInteger(serviceNumber) || serviceNumber <= 0) {
-    alert('Selecciona un servicio válido.');
-    return;
-  }
-
-  if (!window.supabase) {
-    alert('No se pudo conectar con Supabase.');
-    return;
-  }
-
-  const { data: { user }, error: userError } =
-    await window.supabase.auth.getUser();
-
-  if (userError || !user) {
-    alert('Debes iniciar sesión para solicitar un servicio.');
-    return;
-  }
-
-  const { error } = await window.supabase
-    .from('orders')
-    .insert({
-      user_id: user.id,
-      service_id: serviceNumber,
-      imei: imei
-    });
-
-  if (error) {
-    console.error('Error creando orden:', error);
-    alert('No se pudo crear la orden: ' + error.message);
-    return;
-  }
-
-  alert('¡Solicitud registrada correctamente!');
-  window.location.reload();
-}
-
-function checkImei() {
-  const value = document.getElementById('checkImei').value.trim();
-  const result = document.getElementById('imeiResult');
-  if (!/^[0-9]{15}$/.test(value)) {
-    result.textContent = 'Introduce un IMEI válido de 15 dígitos.';
-    return;
-  }
-  result.textContent = 'IMEI recibido. Para consultar el estado real debemos conectar un proveedor API autorizado.';
-}
-
-
-function recharge() {
-  const amount = Number(document.getElementById('amount').value);
-  const currency = document.getElementById('currency').value;
-  const result = document.getElementById('rechargeResult');
-
-  if (!Number.isFinite(amount) || amount <= 0) {
-    result.textContent = 'Introduce un importe válido.';
-    return;
-  }
-
-  result.textContent = 'Solicitud de recarga de ' + amount + ' ' + currency + ' preparada. El pago real aún no está conectado.';
-}
-</script>
-
 <script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from
+  'https://esm.sh/@supabase/supabase-js@2';
 
-  const SUPABASE_URL = 'https://xapnoupfiubyzexewyfu.supabase.co';
+const SUPABASE_URL =
+  'https://xapnoupfiubyzexewyfu.supabase.co';
 
-  const SUPABASE_ANON_KEY = 'sb_publishable_mbSvO8kko44UIuyMoNLp2Q_Lj3_PsMk';
+const SUPABASE_KEY =
+  'sb_publishable_mbSvO8kko44UIuyMoNLp2Q_Lj3_PsMk';
 
-  const supabase = createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+window.supabase = supabase;
 
-  window.supabase = supabase;
-async function cargarOrdenes() {
-  const tbody = document.getElementById('orders');
+const $ = id => document.getElementById(id);
 
-  const { data: { user }, error: userError } =
-    await supabase.auth.getUser();
+function showMessage(id, message, isError = false) {
+  const element = $(id);
+  element.textContent = message;
+  element.style.color = isError ? '#ff7777' : 'var(--green)';
+}
 
-  tbody.replaceChildren();
-
-  if (userError || !user) {
-    const fila = tbody.insertRow();
-    const celda = fila.insertCell();
-    celda.colSpan = 3;
-    celda.textContent = 'Inicia sesión para ver tus órdenes.';
-    return;
-  }
-
-  const { data, error } = await supabase
-    .from('orders')
-    .select('id, status, service_id, created_at')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.error('Error cargando órdenes:', error);
-    const fila = tbody.insertRow();
-    const celda = fila.insertCell();
-    celda.colSpan = 3;
-    celda.textContent = 'Error al cargar las órdenes.';
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    const fila = tbody.insertRow();
-    const celda = fila.insertCell();
-    celda.colSpan = 3;
-    celda.textContent = 'Todavía no tienes solicitudes.';
-    return;
-  }
-
-  data.forEach(orden => {
-    const fila = tbody.insertRow();
-
-    fila.insertCell().textContent = '#' + orden.id;
-    fila.insertCell().textContent = 'Servicio #' + orden.service_id;
-    fila.insertCell().textContent = orden.status || 'Pendiente';
+function moneyARS(value) {
+  return '$' + Number(value || 0).toLocaleString('es-AR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   });
 }
-  async function cargarServicios() {
+
+function moneyUSDT(value) {
+  return Number(value || 0).toFixed(2);
+}
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.toggle('active', section.id === id);
+  });
+
+  document.querySelectorAll('nav button').forEach(button => {
+    button.classList.toggle(
+      'active',
+      button.dataset.section === id
+    );
+  });
+}
+
+document.querySelectorAll('nav button').forEach(button => {
+  button.addEventListener('click', () => {
+    showSection(button.dataset.section);
+  });
+});
+
+async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) return null;
+  return data.user;
+}
+
+// AUTENTICACIÓN
+
+function renderUser(user) {
+  $('authPanel').hidden = !!user;
+  $('userPanel').hidden = !user;
+
+  if (user) {
+    $('userEmail').textContent = user.email || '';
+    $('welcomeText').textContent =
+      'Sesión iniciada: ' + (user.email || '');
+  } else {
+    $('welcomeText').textContent =
+      'Bienvenido a CYBER UNLOCK PRO.';
+  }
+}
+
+$('registerBtn').addEventListener('click', async () => {
+  const email = $('authEmail').value.trim();
+  const password = $('authPassword').value;
+
+  if (!email || password.length < 6) {
+    showMessage(
+      'authMessage',
+      'Ingresá un correo válido y una contraseña de al menos 6 caracteres.',
+      true
+    );
+    return;
+  }
+
+  $('registerBtn').disabled = true;
+  showMessage('authMessage', 'Creando cuenta...');
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    if (data.session) {
+      showMessage('authMessage', 'Cuenta creada correctamente.');
+    } else {
+      showMessage(
+        'authMessage',
+        'Cuenta creada. Revisá tu correo para confirmar el registro.'
+      );
+    }
+  } catch (error) {
+    showMessage('authMessage', 'Error: ' + error.message, true);
+  } finally {
+    $('registerBtn').disabled = false;
+  }
+});
+
+$('loginBtn').addEventListener('click', async () => {
+  const email = $('authEmail').value.trim();
+  const password = $('authPassword').value;
+
+  if (!email || !password) {
+    showMessage('authMessage', 'Ingresá tu correo y contraseña.', true);
+    return;
+  }
+
+  $('loginBtn').disabled = true;
+  showMessage('authMessage', 'Iniciando sesión...');
+
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    showMessage('authMessage', 'Sesión iniciada correctamente.');
+    await refreshAll();
+  } catch (error) {
+    showMessage('authMessage', 'Error: ' + error.message, true);
+  } finally {
+    $('loginBtn').disabled = false;
+  }
+});
+
+$('logoutBtn').addEventListener('click', async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    showMessage('logoutMessage', error.message, true);
+    return;
+  }
+
+  renderUser(null);
+  await refreshAll();
+});
+
+// SERVICIOS
+
+function createServiceCard(service, container) {
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const title = document.createElement('h2');
+  title.textContent = service.name;
+
+  const type = document.createElement('p');
+  type.className = 'muted';
+  type.textContent = service.device_type;
+
+  const price = document.createElement('p');
+  price.className = 'green';
+  price.textContent =
+    'ARS: ' + moneyARS(service.price_ars) +
+    ' | USDT: ' + moneyUSDT(service.price_usdt);
+
+  const imeiLabel = document.createElement('label');
+  imeiLabel.textContent = 'IMEI del dispositivo';
+
+  const imei = document.createElement('input');
+  imei.type = 'text';
+  imei.inputMode = 'numeric';
+  imei.maxLength = 15;
+  imei.placeholder = 'IMEI de 15 dígitos';
+
+  const button = document.createElement('button');
+  button.className = 'action';
+  button.textContent = 'Solicitar servicio';
+
+  button.addEventListener('click', async () => {
+    const value = imei.value.trim();
+
+    if (!/^[0-9]{15}$/.test(value)) {
+      alert('Ingresá un IMEI válido de 15 dígitos.');
+      return;
+    }
+
+    const user = await getCurrentUser();
+
+    if (!user) {
+      alert('Primero iniciá sesión en Mi cuenta.');
+      showSection('cuenta');
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = 'Enviando solicitud...';
+
+    try {
+      const { error } = await supabase.from('orders').insert({
+        user_id: user.id,
+        service_id: service.id,
+        imei: value
+      });
+
+      if (error) throw error;
+
+      alert('Solicitud registrada correctamente.');
+      imei.value = '';
+      await loadOrders();
+      await loadWallet();
+    } catch (error) {
+      alert('No se pudo crear la orden: ' + error.message);
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Solicitar servicio';
+    }
+  });
+
+  card.append(title, type, price, imeiLabel, imei, button);
+  container.appendChild(card);
+}
+
+async function loadServices() {
+  const apple = $('appleCatalog');
+  const android = $('androidCatalog');
+
+  apple.textContent = 'Cargando servicios...';
+  android.textContent = 'Cargando servicios...';
+
   const { data, error } = await supabase
     .from('services')
     .select('id, name, device_type, price_ars, price_usdt, active')
-    .eq('active', true);
+    .eq('active', true)
+    .order('id');
 
   if (error) {
-    console.error('Error cargando servicios:', error);
-    document.getElementById('appleCatalog').textContent =
-      'Error al cargar servicios.';
-    document.getElementById('androidCatalog').textContent =
-      'Error al cargar servicios.';
+    apple.textContent = 'Error al cargar servicios: ' + error.message;
+    android.textContent = 'Error al cargar servicios: ' + error.message;
+    console.error(error);
     return;
   }
-
-  const apple = document.getElementById('appleCatalog');
-  const android = document.getElementById('androidCatalog');
 
   apple.replaceChildren();
   android.replaceChildren();
 
-  
-function mostrarServicio(servicio, contenedor) {
-  const tarjeta = document.createElement('div');
-  tarjeta.className = 'card';
+  (data || []).forEach(service => {
+    const type = String(service.device_type || '').toLowerCase();
 
-  const nombre = document.createElement('h2');
-  nombre.textContent = servicio.name;
-
-  const precio = document.createElement('p');
-  precio.textContent =
-    'ARS: $' + (servicio.price_ars ?? 0) +
-    ' | USDT: ' + (servicio.price_usdt ?? 0);
-
-  const campoIMEI = document.createElement('input');
-  campoIMEI.type = 'text';
-  campoIMEI.maxLength = 15;
-  campoIMEI.placeholder = 'Introduce el IMEI (15 dígitos)';
-
-  const boton = document.createElement('button');
-  boton.textContent = 'Solicitar servicio';
-
-  boton.addEventListener('click', async () => {
-    const imei = campoIMEI.value.trim();
-
-    if (!/^[0-9]{15}$/.test(imei)) {
-      alert('Introduce un IMEI válido de 15 dígitos.');
-      return;
-    }
-
-    const { data: { user }, error: userError } =
-      await supabase.auth.getUser();
-
-    if (userError || !user) {
-      alert('Inicia sesión para solicitar el servicio.');
-      return;
-    }
-
-    const { error } = await supabase.from('orders').insert({
-      user_id: user.id,
-      service_id: servicio.id,
-      imei: imei
-    });
-
-    if (error) {
-      alert('Error al crear la orden: ' + error.message);
-      console.error(error);
-      return;
-    }
-
-    alert('¡Solicitud registrada correctamente!');
-    await cargarOrdenes();
-  });
-
-  tarjeta.append(nombre, precio, campoIMEI, boton);
-  contenedor.appendChild(tarjeta);
-}
-
-
-  data.forEach(servicio => {
-    const tipo = String(servicio.device_type || '').toLowerCase();
-
-    if (tipo.includes('iphone') || tipo.includes('ipad') || tipo.includes('apple')) {
-      mostrarServicio(servicio, apple);
-    } else if (tipo.includes('android')) {
-      mostrarServicio(servicio, android);
+    if (
+      type.includes('iphone') ||
+      type.includes('ipad') ||
+      type.includes('apple')
+    ) {
+      createServiceCard(service, apple);
+    } else if (type.includes('android')) {
+      createServiceCard(service, android);
     }
   });
 
@@ -535,16 +552,82 @@ function mostrarServicio(servicio, contenedor) {
   }
 }
 
-cargarServicios();
- 
-// CARGAR SALDOS DEL USUARIO
-async function cargarBilletera() {
-  const { data: { user }, error: userError } =
-    await supabase.auth.getUser();
+// ÓRDENES
 
-  if (userError || !user) {
-    document.getElementById('walletARS').textContent = '$0,00';
-    document.getElementById('walletUSDT').textContent = '0.00';
+async function loadOrders() {
+  const tbody = $('orders');
+  tbody.replaceChildren();
+
+  const user = await getCurrentUser();
+
+  if (!user) {
+    const row = tbody.insertRow();
+    const cell = row.insertCell();
+    cell.colSpan = 4;
+    cell.textContent = 'Iniciá sesión para consultar tus órdenes.';
+    $('totalOrders').textContent = '0';
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('orders')
+    .select('id, status, service_id, imei, created_at')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    const row = tbody.insertRow();
+    const cell = row.insertCell();
+    cell.colSpan = 4;
+    cell.textContent = 'Error al cargar órdenes: ' + error.message;
+    return;
+  }
+
+  const orders = data || [];
+  $('totalOrders').textContent = String(orders.length);
+
+  if (!orders.length) {
+    const row = tbody.insertRow();
+    const cell = row.insertCell();
+    cell.colSpan = 4;
+    cell.textContent = 'Todavía no tenés solicitudes.';
+    return;
+  }
+
+  const serviceIds = [...new Set(orders.map(o => o.service_id).filter(Boolean))];
+  let serviceNames = {};
+
+  if (serviceIds.length) {
+    const { data: services } = await supabase
+      .from('services')
+      .select('id, name')
+      .in('id', serviceIds);
+
+    (services || []).forEach(service => {
+      serviceNames[service.id] = service.name;
+    });
+  }
+
+  orders.forEach(order => {
+    const row = tbody.insertRow();
+    row.insertCell().textContent = '#' + order.id;
+    row.insertCell().textContent =
+      serviceNames[order.service_id] || 'Servicio #' + order.service_id;
+    row.insertCell().textContent = order.imei || '—';
+    row.insertCell().textContent = order.status || 'pending';
+  });
+}
+
+// BILLETERA
+
+async function loadWallet() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    $('walletARS').textContent = '$0,00';
+    $('walletUSDT').textContent = '0.00';
+    $('homeARS').textContent = '$0,00';
+    $('homeUSDT').textContent = '0.00';
     return;
   }
 
@@ -554,122 +637,136 @@ async function cargarBilletera() {
     .eq('user_id', user.id)
     .maybeSingle();
 
-  if (error || !data) {
-    console.error('Error cargando billetera:', error);
+  if (error) {
+    console.error('Error al consultar billetera:', error);
     return;
   }
 
-  document.getElementById('walletARS').textContent =
-    '$' + Number(data.balance_ars).toLocaleString('es-AR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+  if (!data) {
+    console.warn('No se encontró una billetera para este usuario.');
+    return;
+  }
 
-  document.getElementById('walletUSDT').textContent =
-    Number(data.balance_usdt).toFixed(2);
+  const ars = moneyARS(data.balance_ars);
+  const usdt = moneyUSDT(data.balance_usdt);
+
+  $('walletARS').textContent = ars;
+  $('walletUSDT').textContent = usdt;
+  $('homeARS').textContent = ars;
+  $('homeUSDT').textContent = usdt;
 }
 
-// Actualizar al iniciar sesión o cerrar sesión
+// RECARGAS
+
+$('rechargeBtn').addEventListener('click', async () => {
+  const amount = Number($('amount').value);
+  const currency = $('currency').value;
+  const method = $('paymentMethod').value.trim();
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    showMessage('rechargeResult', 'Ingresá un importe válido.', true);
+    return;
+  }
+
+  if (!['ARS', 'USDT'].includes(currency)) {
+    showMessage('rechargeResult', 'Moneda no válida.', true);
+    return;
+  }
+
+  const user = await getCurrentUser();
+
+  if (!user) {
+    showMessage('rechargeResult', 'Iniciá sesión para solicitar una recarga.', true);
+    showSection('cuenta');
+    return;
+  }
+
+  $('rechargeBtn').disabled = true;
+  showMessage('rechargeResult', 'Registrando solicitud...');
+
+  try {
+    const { data, error } = await supabase
+      .from('topups')
+      .insert({
+        user_id: user.id,
+        amount,
+        currency,
+        method: method || null
+      })
+      .select('id')
+      .single();
+
+    if (error) throw error;
+
+    showMessage(
+      'rechargeResult',
+      'Solicitud #' + data.id + ' registrada. Estado: pendiente de verificación.'
+    );
+
+    $('amount').value = '';
+    $('paymentMethod').value = '';
+  } catch (error) {
+    showMessage('rechargeResult', 'Error: ' + error.message, true);
+    console.error(error);
+  } finally {
+    $('rechargeBtn').disabled = false;
+  }
+});
+
+// CONSULTA IMEI: VALIDACIÓN LOCAL, SIN PROVEEDOR EXTERNO
+
+$('checkImeiBtn').addEventListener('click', () => {
+  const value = $('checkImei').value.trim();
+
+  if (!/^[0-9]{15}$/.test(value)) {
+    showMessage('imeiResult', 'Ingresá un IMEI válido de 15 dígitos.', true);
+    return;
+  }
+
+  showMessage(
+    'imeiResult',
+    'Formato correcto. Falta conectar un proveedor API autorizado para obtener el resultado real.'
+  );
+});
+
+// ACTUALIZACIÓN GENERAL
+
+async function refreshAll() {
+  const user = await getCurrentUser();
+  renderUser(user);
+
+  await Promise.all([
+    loadServices(),
+    loadOrders(),
+    loadWallet()
+  ]);
+}
+
+// INICIO Y CAMBIOS DE SESIÓN
+
+try {
+  const { error } = await supabase.from('services')
+    .select('id')
+    .limit(1);
+
+  if (error) throw error;
+
+  $('connectionStatus').textContent =
+    'Conexión con Supabase establecida correctamente.';
+} catch (error) {
+  $('connectionStatus').textContent =
+    'No se pudo verificar la conexión: ' + error.message;
+  console.error('Error de conexión:', error);
+}
+
+await refreshAll();
+
 supabase.auth.onAuthStateChange(() => {
-  cargarBilletera();
+  setTimeout(() => {
+    refreshAll();
+  }, 0);
 });
-
-cargarBilletera();
-
-
-// AQUÍ PEGAS TODO EL CÓDIGO DE cargarOrdenes()
-
-// AUTENTICACIÓN DE USUARIOS
-const authPanel = document.getElementById('authPanel');
-const userPanel = document.getElementById('userPanel');
-const authMessage = document.getElementById('authMessage');
-
-function mostrarUsuario(user) {
-  if (user) {
-    authPanel.hidden = true;
-    userPanel.hidden = false;
-    document.getElementById('userEmail').textContent =
-      'Correo: ' + user.email;
-  } else {
-    authPanel.hidden = false;
-    userPanel.hidden = true;
-  }
-}
-
-document.getElementById('registerBtn').addEventListener('click', async () => {
-  const email = document.getElementById('authEmail').value.trim();
-  const password = document.getElementById('authPassword').value;
-
-  if (!email || password.length < 6) {
-    authMessage.textContent =
-      'Ingresa un correo válido y una contraseña de al menos 6 caracteres.';
-    return;
-  }
-
-  authMessage.textContent = 'Creando cuenta...';
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password
-  });
-
-  if (error) {
-    authMessage.textContent = 'Error: ' + error.message;
-    return;
-  }
-
-  if (data.session) {
-    authMessage.textContent = '¡Cuenta creada correctamente!';
-  } else {
-    authMessage.textContent =
-      'Cuenta creada. Revisa tu correo para confirmar el registro.';
-  }
-});
-
-document.getElementById('loginBtn').addEventListener('click', async () => {
-  const email = document.getElementById('authEmail').value.trim();
-  const password = document.getElementById('authPassword').value;
-
-  authMessage.textContent = 'Iniciando sesión...';
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    authMessage.textContent = 'Error: ' + error.message;
-  }
-});
-
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    authMessage.textContent = 'Error al cerrar sesión: ' + error.message;
-  }
-});
-
-supabase.auth.onAuthStateChange((_event, session) => {
-  mostrarUsuario(session?.user ?? null);
-});
-
-async function cargarSesion() {
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error) {
-    authMessage.textContent = 'Error al comprobar la sesión.';
-    return;
-  }
-
-  mostrarUsuario(data.session?.user ?? null);
-}
-
-cargarSesion();
 
 </script>
-
 </body>
 </html>
-
-
