@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -120,6 +119,7 @@ footer{
   <button data-section="ordenes">▤ Mis órdenes</button>
   <button data-section="saldo">◈ Saldo y recargas</button>
   <button data-section="cuenta">⚙ Mi cuenta</button>
+  <button data-section="admin">🛠 Administración</button>
 </nav>
 
 <main>
@@ -272,6 +272,70 @@ footer{
   </div>
 </section>
 
+
+<section id="admin" class="section">
+  <h1>Panel de <span class="green">administración</span></h1>
+  <p class="muted">Acceso restringido a la cuenta autorizada como administradora.</p>
+  <div class="notice" id="adminNotice">Verificando permisos de administrador...</div>
+
+  <div id="adminContent" hidden>
+    <div class="cards">
+      <div class="card"><p class="muted">Usuarios</p><div class="value" id="statUsers">0</div></div>
+      <div class="card"><p class="muted">Órdenes</p><div class="value" id="statOrders">0</div></div>
+      <div class="card"><p class="muted">Recargas pendientes</p><div class="value" id="statTopups">0</div></div>
+      <div class="card"><p class="muted">Servicios activos</p><div class="value" id="statServices">0</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Usuarios registrados</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Correo</th><th>Alta</th><th>Saldo ARS</th><th>Saldo USDT</th></tr></thead>
+        <tbody id="adminUsers"><tr><td colspan="4">Cargando...</td></tr></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Órdenes de clientes</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>N.º</th><th>Cliente</th><th>Servicio</th><th>IMEI</th><th>Estado</th><th>Acción</th></tr></thead>
+        <tbody id="adminOrders"><tr><td colspan="6">Cargando...</td></tr></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Solicitudes de recarga</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>N.º</th><th>Cliente</th><th>Importe</th><th>Moneda</th><th>Método</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="adminTopups"><tr><td colspan="7">Cargando...</td></tr></tbody>
+      </table></div>
+      <p class="muted">Aprobá una recarga únicamente después de verificar el pago recibido.</p>
+    </div>
+
+    <div class="card">
+      <h2>Agregar servicio</h2>
+      <label for="newServiceName">Nombre del servicio</label>
+      <input id="newServiceName" placeholder="Ej.: Diagnóstico de dispositivo">
+      <label for="newServiceType">Tipo de dispositivo</label>
+      <select id="newServiceType"><option value="iPhone / iPad">iPhone / iPad</option><option value="Android">Android</option></select>
+      <label for="newServiceARS">Precio en ARS</label>
+      <input id="newServiceARS" type="number" min="0" step="0.01" placeholder="0">
+      <label for="newServiceUSDT">Precio en USDT</label>
+      <input id="newServiceUSDT" type="number" min="0" step="0.01" placeholder="0">
+      <button class="action" id="addServiceBtn">Agregar servicio</button>
+      <p id="addServiceMessage" class="message"></p>
+    </div>
+
+    <div class="card">
+      <h2>Servicios publicados</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Servicio</th><th>Tipo</th><th>ARS</th><th>USDT</th><th>Activo</th><th>Guardar</th></tr></thead>
+        <tbody id="adminServices"><tr><td colspan="6">Cargando...</td></tr></tbody>
+      </table></div>
+    </div>
+    <button class="secondary" id="refreshAdminBtn">Actualizar panel</button>
+  </div>
+</section>
+
 </main>
 </div>
 
@@ -325,6 +389,7 @@ function showSection(id) {
 document.querySelectorAll('nav button').forEach(button => {
   button.addEventListener('click', () => {
     showSection(button.dataset.section);
+    if (button.dataset.section === 'admin') loadAdmin();
   });
 });
 
@@ -728,6 +793,232 @@ $('checkImeiBtn').addEventListener('click', () => {
     'Formato correcto. Falta conectar un proveedor API autorizado para obtener el resultado real.'
   );
 });
+
+
+// ADMINISTRACIÓN: las funciones RPC y políticas deben existir en Supabase.
+function adminCell(row, value) {
+  const cell = row.insertCell();
+  cell.textContent = value == null || value === '' ? '—' : String(value);
+  return cell;
+}
+
+function adminAction(label, callback, className = 'secondary') {
+  const button = document.createElement('button');
+  button.className = className;
+  button.textContent = label;
+  button.addEventListener('click', callback);
+  return button;
+}
+
+function adminDate(value) {
+  if (!value) return '—';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString('es-AR');
+}
+
+async function loadAdmin() {
+  const notice = $('adminNotice');
+  const content = $('adminContent');
+  content.hidden = true;
+  notice.textContent = 'Verificando permisos y cargando información...';
+
+  const user = await getCurrentUser();
+  if (!user) {
+    notice.textContent = 'Iniciá sesión con la cuenta administradora para acceder.';
+    return;
+  }
+
+  try {
+    const { data, error } = await supabase.rpc('admin_dashboard');
+    if (error) throw error;
+    if (!data || typeof data !== 'object') throw new Error('El servidor devolvió una respuesta inesperada.');
+
+    const stats = data.stats || {};
+    $('statUsers').textContent = String(stats.users ?? (data.users || []).length);
+    $('statOrders').textContent = String(stats.orders ?? (data.orders || []).length);
+    $('statTopups').textContent = String(stats.pending_topups ?? (data.topups || []).filter(x => x.status === 'pending').length);
+    $('statServices').textContent = String(stats.active_services ?? (data.services || []).filter(x => x.active).length);
+
+    const usersBody = $('adminUsers');
+    usersBody.replaceChildren();
+    (data.users || []).forEach(item => {
+      const row = usersBody.insertRow();
+      adminCell(row, item.email);
+      adminCell(row, adminDate(item.created_at));
+      adminCell(row, moneyARS(item.balance_ars));
+      adminCell(row, moneyUSDT(item.balance_usdt));
+    });
+    if (!usersBody.rows.length) usersBody.innerHTML = '<tr><td colspan="4">No hay usuarios para mostrar.</td></tr>';
+
+    const ordersBody = $('adminOrders');
+    ordersBody.replaceChildren();
+    (data.orders || []).forEach(item => {
+      const row = ordersBody.insertRow();
+      adminCell(row, '#' + item.id);
+      adminCell(row, item.email);
+      adminCell(row, item.service_name);
+      adminCell(row, item.imei);
+      adminCell(row, item.status);
+      const cell = row.insertCell();
+      const select = document.createElement('select');
+      ['pending', 'in_progress', 'completed', 'rejected'].forEach(status => {
+        const option = document.createElement('option');
+        option.value = status;
+        option.textContent = status;
+        option.selected = status === item.status;
+        select.appendChild(option);
+      });
+      const save = adminAction('Guardar', async () => {
+        save.disabled = true;
+        try {
+          const { error } = await supabase.from('orders').update({ status: select.value }).eq('id', item.id);
+          if (error) throw error;
+          await loadAdmin();
+        } catch (err) {
+          alert('No se pudo actualizar la orden: ' + err.message);
+          save.disabled = false;
+        }
+      });
+      cell.append(select, save);
+    });
+    if (!ordersBody.rows.length) ordersBody.innerHTML = '<tr><td colspan="6">Todavía no hay órdenes.</td></tr>';
+
+    const topupsBody = $('adminTopups');
+    topupsBody.replaceChildren();
+    (data.topups || []).forEach(item => {
+      const row = topupsBody.insertRow();
+      adminCell(row, '#' + item.id);
+      adminCell(row, item.email);
+      adminCell(row, item.amount);
+      adminCell(row, item.currency);
+      adminCell(row, item.method);
+      adminCell(row, item.status);
+      const cell = row.insertCell();
+      if (item.status === 'pending') {
+        const approve = adminAction('Aprobar', async () => {
+          if (!confirm('Confirmá que verificaste el pago antes de acreditar el saldo. ¿Aprobar recarga #' + item.id + '?')) return;
+          approve.disabled = true;
+          try {
+            const { error } = await supabase.rpc('admin_approve_topup', { p_topup_id: item.id });
+            if (error) throw error;
+            alert('Recarga aprobada y saldo acreditado.');
+            await loadAdmin();
+            await loadWallet();
+          } catch (err) {
+            alert('No se pudo aprobar: ' + err.message);
+            approve.disabled = false;
+          }
+        }, 'action');
+        const reject = adminAction('Rechazar', async () => {
+          if (!confirm('¿Rechazar la solicitud #' + item.id + '?')) return;
+          reject.disabled = true;
+          try {
+            const { error } = await supabase.rpc('admin_reject_topup', { p_topup_id: item.id });
+            if (error) throw error;
+            await loadAdmin();
+          } catch (err) {
+            alert('No se pudo rechazar: ' + err.message);
+            reject.disabled = false;
+          }
+        });
+        cell.append(approve, reject);
+      } else {
+        cell.textContent = 'Sin acciones';
+      }
+    });
+    if (!topupsBody.rows.length) topupsBody.innerHTML = '<tr><td colspan="7">No hay solicitudes de recarga.</td></tr>';
+
+    renderAdminServices(data.services || []);
+    content.hidden = false;
+    notice.textContent = 'Acceso de administrador verificado. Datos actualizados.';
+  } catch (error) {
+    notice.textContent = 'No se pudo abrir el panel: ' + error.message;
+    console.error('Error del panel de administración:', error);
+  }
+}
+
+function renderAdminServices(services) {
+  const body = $('adminServices');
+  body.replaceChildren();
+  services.forEach(service => {
+    const row = body.insertRow();
+    const nameCell = row.insertCell();
+    const name = document.createElement('input');
+    name.value = service.name || '';
+    nameCell.appendChild(name);
+
+    adminCell(row, service.device_type);
+    const arsCell = row.insertCell();
+    const ars = document.createElement('input');
+    ars.type = 'number'; ars.min = '0'; ars.step = '0.01'; ars.value = service.price_ars ?? 0;
+    arsCell.appendChild(ars);
+
+    const usdtCell = row.insertCell();
+    const usdt = document.createElement('input');
+    usdt.type = 'number'; usdt.min = '0'; usdt.step = '0.01'; usdt.value = service.price_usdt ?? 0;
+    usdtCell.appendChild(usdt);
+
+    const activeCell = row.insertCell();
+    const active = document.createElement('input');
+    active.type = 'checkbox'; active.checked = !!service.active;
+    activeCell.appendChild(active);
+
+    const actionCell = row.insertCell();
+    const save = adminAction('Guardar', async () => {
+      const priceARS = Number(ars.value);
+      const priceUSDT = Number(usdt.value);
+      if (!name.value.trim() || !Number.isFinite(priceARS) || priceARS < 0 || !Number.isFinite(priceUSDT) || priceUSDT < 0) {
+        alert('Revisá el nombre y los precios del servicio.');
+        return;
+      }
+      save.disabled = true;
+      try {
+        const { error } = await supabase.from('services').update({
+          name: name.value.trim(), price_ars: priceARS, price_usdt: priceUSDT, active: active.checked
+        }).eq('id', service.id);
+        if (error) throw error;
+        alert('Servicio actualizado.');
+        await loadAdmin();
+        await loadServices();
+      } catch (err) {
+        alert('No se pudo guardar el servicio: ' + err.message);
+        save.disabled = false;
+      }
+    }, 'action');
+    actionCell.appendChild(save);
+  });
+  if (!body.rows.length) body.innerHTML = '<tr><td colspan="6">Todavía no hay servicios cargados.</td></tr>';
+}
+
+$('addServiceBtn').addEventListener('click', async () => {
+  const name = $('newServiceName').value.trim();
+  const device_type = $('newServiceType').value;
+  const price_ars = Number($('newServiceARS').value || 0);
+  const price_usdt = Number($('newServiceUSDT').value || 0);
+  if (!name || !Number.isFinite(price_ars) || price_ars < 0 || !Number.isFinite(price_usdt) || price_usdt < 0) {
+    showMessage('addServiceMessage', 'Ingresá un nombre y precios válidos.', true);
+    return;
+  }
+  $('addServiceBtn').disabled = true;
+  try {
+    const { error } = await supabase.from('services').insert({
+      name, device_type, price_ars, price_usdt, active: true
+    });
+    if (error) throw error;
+    showMessage('addServiceMessage', 'Servicio agregado correctamente.');
+    $('newServiceName').value = '';
+    $('newServiceARS').value = '';
+    $('newServiceUSDT').value = '';
+    await loadAdmin();
+    await loadServices();
+  } catch (error) {
+    showMessage('addServiceMessage', 'No se pudo agregar: ' + error.message, true);
+  } finally {
+    $('addServiceBtn').disabled = false;
+  }
+});
+
+$('refreshAdminBtn').addEventListener('click', loadAdmin);
 
 // ACTUALIZACIÓN GENERAL
 
